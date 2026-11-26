@@ -6,7 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/admin/config.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/admin/config.php";
 
 try {
     $pdo = new PDO(DB, USER, PWD);
@@ -32,12 +32,12 @@ $jeux_utilisateur = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <title>Mes Notes - Playtest</title>
-    <?php include_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
+    <?php include_once $_SERVER["DOCUMENT_ROOT"] . "/includes/load-css.php"; ?>
     <link rel="stylesheet" href="css/my_rate.css">
 </head>
 <body>
 <div id="particles-js"></div>
-<?php include_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header-exemple.php"; ?>
+<?php include_once $_SERVER["DOCUMENT_ROOT"] . "/includes/header-exemple.php"; ?>
 
 <h1>Mes Notes et Commentaires</h1>
 
@@ -47,7 +47,7 @@ $jeux_utilisateur = $stmt->fetchAll();
     <div class="jeux-container">
         <?php foreach ($jeux_utilisateur as $jeu): ?>
             <div class="jeu-card">
-                <img src="/sae203/uploads/<?php echo htmlspecialchars($jeu['image_url']); ?>" alt="Image de <?php echo htmlspecialchars($jeu['titre']); ?>" width="150">
+                <img src="/uploads/<?php echo htmlspecialchars($jeu['image_url']); ?>" alt="Image de <?php echo htmlspecialchars($jeu['titre']); ?>" width="150">
                 <h3><?php echo htmlspecialchars($jeu['titre']); ?></h3>
                 <p>Note : <?php echo htmlspecialchars($jeu['note']); ?>/5</p>
                 <p>Commentaire :
@@ -59,7 +59,7 @@ $jeux_utilisateur = $stmt->fetchAll();
     <?php require_once __DIR__ . "/includes/load-js.php"; ?>
 <?php endif; ?>
 
-<?php include_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer-exemple.php"; ?>
+<?php include_once $_SERVER["DOCUMENT_ROOT"] . "/includes/footer-exemple.php"; ?>
 
 </body>
 </html>

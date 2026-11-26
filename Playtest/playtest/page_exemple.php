@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/sae203/css/page_exemple.css">
+<link rel="stylesheet" href="/css/page_exemple.css">
 
 <?php
 session_start();
@@ -9,9 +9,9 @@ if (!isset($_SESSION['user_id'])) {
     $message_connexion = "";
 }
 
-require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header-exemple.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/admin/config.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/php/my_functions.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/includes/header-exemple.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/admin/config.php";
+require_once $_SERVER["DOCUMENT_ROOT"] . "/php/my_functions.php";
 require_once __DIR__ . "/includes/load-css.php";
 
 if (isset($_GET['id'])) {
@@ -31,7 +31,7 @@ if (isset($_GET['id'])) {
 
     if ($jeu) {
         echo '<div class="jeu-details">';
-        echo "<img src='/sae203/uploads/" . htmlspecialchars($jeu['image_details_url']) . "' alt='Image de " . htmlspecialchars($jeu['titre']) . "'>";
+        echo "<img src='/uploads/" . htmlspecialchars($jeu['image_details_url']) . "' alt='Image de " . htmlspecialchars($jeu['titre']) . "'>";
         echo '<h1>' . htmlspecialchars($jeu['titre']) . '</h1>';
         echo '<p>' . htmlspecialchars($jeu['description']) . '</p>';
         echo '<p class="creation">Créé le : ' . htmlspecialchars($jeu['creation']) . '</p>';
@@ -90,4 +90,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <a id="centrer" href="login.php">Se connecter</a> pour laisser une note ou un commentaire.
 <?php endif; ?>
 
-<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer-exemple.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/includes/footer-exemple.php"; ?>

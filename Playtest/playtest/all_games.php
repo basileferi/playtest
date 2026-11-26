@@ -61,8 +61,8 @@ if (empty($jeux)) {
         echo '<tr>';
         echo '<td class="police-jeux" >' . htmlspecialchars($jeu['titre']) . '</td>';
         echo '<td class="color-rate" >' . htmlspecialchars($jeu['note_moyenne']) . '/5</td>';
-        echo '<td><img src="/sae203/uploads/' . htmlspecialchars($jeu['image_url']) . '" alt="Image de ' . htmlspecialchars($jeu['titre']) . '" style="width: 100px; height: auto;"></td>';
-        echo '<td><a href="/sae203/page_exemple.php?id=' . $jeu['id'] . '" class="btn-details">Voir les détails</a></td>';
+        echo '<td><img src="/uploads/' . htmlspecialchars($jeu['image_url']) . '" alt="Image de ' . htmlspecialchars($jeu['titre']) . '" style="width: 100px; height: auto;"></td>';
+        echo '<td><a href="/page_exemple.php?id=' . $jeu['id'] . '" class="btn-details">Voir les détails</a></td>';
         echo '</tr>';
     }
 

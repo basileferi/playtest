@@ -37,10 +37,10 @@ if (empty($jeux)) {
     echo '<section class="jeux-container">';
     foreach ($jeux as $jeu) {
         echo '<article class="jeu-card">';
-        echo '<img src="/sae203/uploads/' . htmlspecialchars($jeu['image_url']) . '" alt="Image de ' . htmlspecialchars($jeu['titre']) . '">';
+        echo '<img src="/uploads/' . htmlspecialchars($jeu['image_url']) . '" alt="Image de ' . htmlspecialchars($jeu['titre']) . '">';
         echo '<h2>' . htmlspecialchars($jeu['titre']) . '</h2>';
         echo '<p>Note moyenne : ' . htmlspecialchars($jeu['note_moyenne']) . '/5</p>';
-        echo '<a href="/sae203/page_exemple.php?id=' . $jeu['id'] . '">Voir les détails</a>';
+        echo '<a href="/page_exemple.php?id=' . $jeu['id'] . '">Voir les détails</a>';
         echo '</article>';
     }
     echo '</section>';

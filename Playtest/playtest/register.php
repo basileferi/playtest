@@ -7,7 +7,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = htmlspecialchars($_POST['email']);
     $mot_de_passe = $_POST['mot_de_passe'];
 
-    require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/admin/config.php";
+    require_once $_SERVER["DOCUMENT_ROOT"] . "/admin/config.php";
 
     try {
         $pdo = new PDO(DB, USER, PWD);
@@ -40,11 +40,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription</title>
-    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/load-css.php"; ?>
+    <?php require_once $_SERVER["DOCUMENT_ROOT"] . "/includes/load-css.php"; ?>
 </head>
 <body>
 
-<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/header-exemple.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/includes/header-exemple.php"; ?>
 
 <div class="form-container">
     <form class="login-form" action="register.php" method="POST">
@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <?php require_once __DIR__ . "/includes/load-js.php"; ?>
 </div>
 
-<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/sae203/includes/footer-exemple.php"; ?>
+<?php require_once $_SERVER["DOCUMENT_ROOT"] . "/includes/footer-exemple.php"; ?>
 
 </body>
 </html>

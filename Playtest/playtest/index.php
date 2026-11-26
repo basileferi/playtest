@@ -1,6 +1,6 @@
 <?php
     // VINI VIDI REPARTI
     // Exemple de redirection
-    header("Location: /sae203/homepage.php");
+    header("Location: /homepage.php");
     exit();
 ?>

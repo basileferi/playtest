@@ -1,3 +1,3 @@
-<script src="/sae203/vendor/lib.js"></script>
-<script src="/sae203/js/script.js"></script>
-<script src="/sae203/js/particle.js"></script>
+<script src="/vendor/lib.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/particle.js"></script>
