@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $stmt = $pdo->prepare("INSERT INTO sae203_personnes (prenom, nom, email, mot_de_passe, inscription) VALUES (?, ?, ?, ?, NOW())");
 
-        if ($stmt->execute([$prenom, $nom, $email, $mot_de_passe])) {
+        if ($stmt->execute([$prenom, $nom, $email, password_hash($mot_de_passe, PASSWORD_DEFAULT)])) {
             echo "Inscription réussie ! Vous pouvez maintenant vous connecter.";
         } else {
             echo "Erreur lors de l'inscription.";

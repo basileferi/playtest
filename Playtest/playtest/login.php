@@ -20,8 +20,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->execute([$email]);
     $utilisateur = $stmt->fetch();
 
+    $stocke = $utilisateur ? (string) $utilisateur['mot_de_passe'] : '';
+    $estHache = $stocke !== '' && password_get_info($stocke)['algo'] !== null;
+    // Accounts created before hashing still hold the clear password: accept it once, then hash it.
+    $valide = $utilisateur && ($estHache
+        ? password_verify($mot_de_passe, $stocke)
+        : ($stocke !== '' && hash_equals($stocke, $mot_de_passe)));
+
     if ($utilisateur) {
-        if ($mot_de_passe === $utilisateur['mot_de_passe']) {
+        if ($valide) {
+            if (!$estHache || password_needs_rehash($stocke, PASSWORD_DEFAULT)) {
+                $maj = $pdo->prepare("UPDATE sae203_personnes SET mot_de_passe = ? WHERE id = ?");
+                $maj->execute([password_hash($mot_de_passe, PASSWORD_DEFAULT), $utilisateur['id']]);
+            }
+            session_regenerate_id(true);
             $_SESSION['user_id'] = $utilisateur['id'];
             header("Location: homepage.php");
             exit();
