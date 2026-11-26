@@ -1,0 +1,79 @@
+name: Deploy
+
+# Every push to main: PHP syntax check, then rsync of Playtest/playtest/ to the Infomaniak site.
+# Server-only files (admin/config.local.php, Infomaniak's .htaccess / .user.ini) are never touched.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  SSH_HOST: jh6rkj.ftp.infomaniak.com
+  SSH_USER: jh6rkj_deploy
+  DEPLOY_DIR: sites/playtest.basileferi.fr
+  SITE_URL: https://playtest.basileferi.fr
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: PHP syntax check
+        run: find Playtest/playtest -name '*.php' -print0 | xargs -0 -n1 php -l > /dev/null
+
+      - name: Configure SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          umask 077
+          mkdir -p ~/.ssh
+          begin='-----BEGIN OPENSSH PRIVATE KEY-----'
+          end='-----END OPENSSH PRIVATE KEY-----'
+          flat="$(printf '%s' "$SSH_PRIVATE_KEY" | tr -d '\r' | tr '\n' ' ')"
+          [[ "$flat" == *"$begin"*"$end"* ]] || { echo "::error::SSH_PRIVATE_KEY must be the whole private key file."; exit 1; }
+          body="${flat#*"$begin"}"; body="${body%%"$end"*}"; body="$(printf '%s' "$body" | tr -d ' \t')"
+          { echo "$begin"; printf '%s\n' "$body" | fold -w 70; echo "$end"; } > ~/.ssh/deploy_key
+          printf '%s\n' "$SSH_KNOWN_HOSTS" | tr -d '\r' | sed -E "s/^[[:space:]\`'\"]+//; s/[[:space:]\`'\"]+$//" | grep -v '^$' > ~/.ssh/known_hosts
+          ssh-keygen -F "$SSH_HOST" -f ~/.ssh/known_hosts > /dev/null || { echo "::error::SSH_KNOWN_HOSTS has no entry for $SSH_HOST."; exit 1; }
+          cat > ~/.ssh/config <<EOF
+          Host production
+            HostName ${SSH_HOST}
+            User ${SSH_USER}
+            IdentityFile ~/.ssh/deploy_key
+            IdentitiesOnly yes
+            StrictHostKeyChecking yes
+            BatchMode yes
+            ConnectTimeout 20
+          EOF
+          ssh production true
+
+      - name: Upload files
+        run: |
+          rsync -rlz --delete --checksum --chmod=D755,F644 \
+            --filter='P /admin/config.local.php' \
+            --filter='P /.htaccess' \
+            --filter='P /.user.ini' \
+            --filter='P /.infomaniak-maintenance.html' \
+            --exclude='/readme.md' \
+            Playtest/playtest/ "production:${DEPLOY_DIR}/"
+
+      - name: Check the site answers
+        run: curl -sS -o /dev/null -w '%{http_code}\n' --fail -L "${SITE_URL}/homepage.php"
+
+      - name: Remove SSH material
+        if: always()
+        run: rm -rf ~/.ssh

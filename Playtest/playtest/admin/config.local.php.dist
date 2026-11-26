@@ -1,0 +1,7 @@
+<?php
+
+// Copy to config.local.php (git-ignored) and fill in.
+const DB_HOST = 'localhost';
+const DB_NAME = 'playtest';
+const DB_USER = 'root';
+const DB_PASSWORD = '';

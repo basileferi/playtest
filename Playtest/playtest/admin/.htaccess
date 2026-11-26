@@ -1,0 +1,4 @@
+# The SQL seed and the config files are never served directly.
+<FilesMatch "(\.sql|\.dist|^config(\.local)?\.php)$">
+    Require all denied
+</FilesMatch>
